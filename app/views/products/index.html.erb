@@ -8,13 +8,17 @@
 <script type="text/javascript" charset="utf-8">
 $(function() {
   $(".js-more").on("click", function() {
-    var id = $(this).data("id");
+    let id = $(this).data("id");
     $.get("/products/" + id + ".json", function(data) {
-      var inventoryText = "<strong>Available</strong>";
+      let inventoryText = "<strong>Available</strong>";
       if(data.inventory === 0){
         inventoryText = "<strong>Sold Out</strong>";
       }
-      var descriptionText = "<p>" + data.description + "</p><p>" + inventoryText + "</p>";
+      let ordersList = "";
+      for(o of data.orders){
+          ordersList += "<li>" + o.id + " | " + o.created_at + "</li>"
+        }
+      let descriptionText = "<p>" + data.description + "</p><p>" + inventoryText + "</p>" + "<ul>" + ordersList + "</ul>";
       $("#product-" + id).html(descriptionText);
     });
   });
