@@ -9,16 +9,16 @@
 $(function() {
   $(".js-more").on("click", function() {
     var id = $(this).data("id");
-    $.get("/products/" + id + "/description", function(description) {
-      $.get("/products/" + id + "/inventory", function(inventory) {
+    $.get("/products/" + id + ".json", function(product_data) {
         var inventoryText = "<strong>Available</strong>";
-        if(inventory === "false"){
+        if(product_data.inventory === "false"){
           inventoryText = "<strong>Sold Out</strong>";
-        }
-        var descriptionText = "<p>" + description + "</p><p>" + inventoryText + "</p>";
+        };
+        var orderText = ""
+        product_data.orders.forEach(function(order){orderText = orderText + "<li> order " + order.id + " created at: " + order.created_at + "</li>"})
+        var descriptionText = "<p>" + product_data.description + "</p><p>" + inventoryText + "</p>" + "</p><ul>" + orderText + "</ul>";
         $("#product-" + id).html(descriptionText);
       });
     });
   });
-});
 </script>
